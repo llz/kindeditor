@@ -53,7 +53,7 @@ $(".file_img_up").fileupload({
     $(".up_img").on('click',function(){
         obj = $(this);
         obj.next().trigger('click');
-    })
+    });
 EOT;
 
 

@@ -25,5 +25,6 @@ return [
         "media_format"  => "mp3,mp4,avi",                                               // 上传视音频格式
         "flash_format"  => "swf,fla",                                                   // 上传flash格式
         "upload_path"   => "uploads",                                                   // 上传文件目录
+        "image_resize"  => 800,                                                         //图片缩放宽度
     ],
 ];

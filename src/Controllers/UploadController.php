@@ -9,6 +9,7 @@ namespace Yxx\Kindeditor\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class UploadController extends Controller {
     protected $ds = "/";
@@ -31,6 +32,7 @@ class UploadController extends Controller {
         "flash_format"  => "swf,fla",                                                   // 上传flash格式
         "upload_path"   => "uploads",                                                   // 上传文件目录
        // "show_domain"   => 1,                                                           // 是否显示带域名的完整路径
+        "image_resize"  => 800,//图片缩放宽度
     ];
 
 
@@ -55,6 +57,13 @@ class UploadController extends Controller {
                 $imgfile   = $request->imgFile;
                 $this->check($imgfile);
                 $path = Storage::disk('public')->putFile($this->file_move_path, $imgfile);
+                //缩放图片
+                $image = Image::make(Storage::disk('public')->path($path))
+                    ->resize($this->config['image_resize'], null, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    })
+                    ->save();
                 $path = Storage::disk('public')->url($path);
                 return $this->ajaxReturn("",$path);
             } else {
